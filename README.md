@@ -41,7 +41,7 @@ mini_rag_api/
 ├── README.md
 
 Setup Instruction and run the project.
-1.Clone the repository. 
+1.Clone the repository on "https://github.com/rituja-kas/RAG_API"
 2.Create the virtual environment by using -"python -m venv venv"
 3.pip install fastapi uvicorn python-multipart numpy ollama python-dotenv
 4.ollama pull mistral:7b
