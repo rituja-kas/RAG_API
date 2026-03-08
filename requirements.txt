@@ -8,3 +8,4 @@ dotenv
 openai
 numpy
 pandas
+python-multipart
