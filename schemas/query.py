@@ -4,7 +4,7 @@ from typing import Optional, List
 
 class QueryRequest(BaseModel):
     question:str
-    top_k:int
+    top_k:Optional[int] = 3
 
 
 class QueryResponse(BaseModel):

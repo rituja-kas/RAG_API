@@ -10,6 +10,7 @@ from utils.text_cleaner import  clean_text
 app = FastAPI(title="Mini RAG Search API")
 
 vector_store = InMemoryVectorStore()
+
 chunk_id_counter = 0
 
 @app.post("/ingest")
@@ -35,18 +36,32 @@ async def ingest_document(file: UploadFile = File(...)):
 
 
 # query endpoint
-@app.post("/query",response_model=QueryResponse)
-async def query_document(request:QueryRequest):
+@app.post("/query", response_model=QueryResponse)
+async def query_document(request: QueryRequest):
     if not vector_store.chunks:
-        raise HTTPException(status_code=400,detail="No document ingested yet")
+        raise HTTPException(status_code=400, detail="No document ingested yet")
 
-    print("vector_storeeeeeeeeeeeeeee",vector_store)
+    print(f"Received query request: {request}")  # Debug print
+    print(f"Question: {request.question}")
+    print(f"Top_k: {request.top_k}")
 
-    retrieved_chunks = retrieve(request.question,vector_store,request.top_k)
-    context_texts = [chunk.text for chunk in retrieved_chunks]
-    answer = generate_answer(request.question,context_texts)
+    try:
+        retrieved_chunks = retrieve(request.question, vector_store, request.top_k)
 
-    return  QueryResponse(answer=answer,sources=context_texts)
+        if not retrieved_chunks:
+            return QueryResponse(
+                answer="No relevant information found.",
+                sources=[]
+            )
+
+        context_texts = [chunk.text for chunk in retrieved_chunks]
+        answer = generate_answer(request.question, context_texts)
+
+        return QueryResponse(answer=answer, sources=context_texts)
+
+    except Exception as e:
+        print(f"Error in query: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get('/health')
 async def health():
