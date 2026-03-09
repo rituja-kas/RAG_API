@@ -18,7 +18,7 @@ def get_embedding(text: str) -> list:
     try:
         print(f"Generating embedding for text: {text[:50]}...")
         response = client.embeddings.create(
-            model="text-embedding-3-small",  # OpenAI-compatible embedding model
+            model="openai/text-embedding-3-small",
             input=text
         )
 
