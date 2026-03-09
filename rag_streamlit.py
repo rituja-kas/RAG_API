@@ -28,7 +28,8 @@ st.markdown("""
 
 # Initialize session state
 if 'api_url' not in st.session_state:
-    st.session_state.api_url = "http://localhost:8000"
+    # st.session_state.api_url = "http://localhost:8000"
+    st.session_state.api_url = "https://rag-api-5j63.onrender.com"
 if 'chunks_count' not in st.session_state:
     st.session_state.chunks_count = 0
 if 'query_history' not in st.session_state:
